@@ -1,0 +1,27 @@
+services:
+  database:
+    image: postgres:15-alpine
+    container_name: pharmanode_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: ${DB_NAME:-pharmanode}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # Uncomment and configure if you want to dockerize the application as well
+  # app:
+  #   build: .
+  #   container_name: pharmanode_app
+  #   ports:
+  #     - "${PORT:-3000}:3000"
+  #   environment:
+  #     - DATABASE_URL=postgresql://${DB_USER:-postgres}:${DB_PASSWORD:-postgres}@database:5432/${DB_NAME:-pharmanode}?schema=public
+  #   depends_on:
+  #     - database
+
+volumes:
+  postgres_data:
